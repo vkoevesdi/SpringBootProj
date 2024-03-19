@@ -7,8 +7,8 @@ services:
     ports:
       - 5432:5432
     environment:
-      TZ: Europe/Berlin
-      POSTGRES_USER: todo-user
-      POSTGRES_PASSWORD: todo-password
-      POSTGRES_DB: todo
+      TZ: "Europe/Berlin"
+      POSTGRES_USER: "todo-user"
+      POSTGRES_PASSWORD: "todo-password"
+      POSTGRES_DB: "todo"
     restart: always

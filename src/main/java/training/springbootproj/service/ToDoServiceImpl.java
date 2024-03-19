@@ -1,0 +1,97 @@
+package training.springbootproj.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import training.springbootproj.entity.ToDo;
+import training.springbootproj.repository.ToDoRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ToDoServiceImpl implements ToDoService{
+    private final ToDoRepository toDoRepository;
+
+    @Override
+    public void saveToDo(ToDo toDo) {
+        this.toDoRepository.save(toDo);
+    }
+
+    @Override
+    public void updateToDo(ToDo toDo) {
+        this.toDoRepository.save(toDo);
+    }
+
+    @Override
+    public void deleteTodo(ToDo toDo) {
+        this.toDoRepository.delete(toDo);
+    }
+
+    @Override
+    public List<ToDo> getAllToDo() {
+        return (List<ToDo>) this.toDoRepository.findAll();
+    }
+
+    @Override
+    public List<ToDo> getOpenToDo() {
+        List<ToDo> openToDo= new ArrayList<>();
+        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
+        for(ToDo t : allToDo) {
+            if (!t.getCompleted())
+                openToDo.add(t);
+        }
+        return openToDo;
+    }
+
+    @Override
+    public List<ToDo> getClosedToDo() {
+        List<ToDo> closedToDo= new ArrayList<>();
+        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
+        for(ToDo t : allToDo) {
+            if (t.getCompleted())
+                closedToDo.add(t);
+        }
+        return closedToDo;
+    }
+
+    @Override
+    public Long countOpenToDo() {
+        Long count = 0L;
+        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
+        for(ToDo t : allToDo) {
+            if (!t.getCompleted())
+                count++;
+        }
+        return count;
+    }
+
+    @Override
+    public Long countClosedToDo() {
+        Long count = 0L;
+        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
+        for(ToDo t : allToDo) {
+            if (t.getCompleted())
+                count++;
+        }
+        return count;
+    }
+
+    public List<ToDo> findByCompletedIsTrue() {
+        return toDoRepository.findAllByCompletedIsTrue();
+    }
+
+    public List<ToDo> findByCompletedIsFalse() {
+        return toDoRepository.findAllByCompletedIsFalse();
+    }
+
+    public Long countAllByCompletedIsTrue() {
+        return toDoRepository.countAllByCompletedIsTrue();
+    }
+
+    public Long countAllByCompletedIsFalse() {
+        return toDoRepository.countAllByCompletedIsFalse();
+    }
+
+
+}
