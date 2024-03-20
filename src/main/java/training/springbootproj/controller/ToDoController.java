@@ -1,11 +1,13 @@
 package training.springbootproj.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import training.springbootproj.entity.ToDo;
 import training.springbootproj.service.ToDoServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,17 +17,23 @@ public class ToDoController {
     private final ToDoServiceImpl toDoServiceImpl;
 
     @PostMapping()
-    public void createToDo(@RequestBody ToDo toDo){
+    public void createToDo(@Valid @RequestBody ToDo toDo) {
         this.toDoServiceImpl.createToDo(toDo);
     }
+
     @PutMapping()
-    public void updateToDo(@RequestBody ToDo toDo){
+    public void updateToDo(@Valid @RequestBody ToDo toDo) {
         this.toDoServiceImpl.updateToDo(toDo);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteToDoById(@RequestBody Long id){
+    public void deleteToDoById(@PathVariable Long id) {
         this.toDoServiceImpl.deleteTodoById(id);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<ToDo> getToDoById(@PathVariable Long id) {
+        return this.toDoServiceImpl.getToDoById(id);
     }
 
     @GetMapping("/all")
@@ -34,7 +42,7 @@ public class ToDoController {
     }
 
     @GetMapping("/completed")
-    public List<ToDo> findAllByCompletedIsTrue(){
+    public List<ToDo> findAllByCompletedIsTrue() {
         return this.toDoServiceImpl.findAllByCompletedIsTrue();
     }
 

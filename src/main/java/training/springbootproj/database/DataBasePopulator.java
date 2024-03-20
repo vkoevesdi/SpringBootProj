@@ -8,6 +8,8 @@ import training.springbootproj.entity.ToDo;
 import training.springbootproj.repository.ToDoRepository;
 import training.springbootproj.service.ToDoService;
 
+import java.util.Arrays;
+
 @Component
 @RequiredArgsConstructor
 public class DataBasePopulator implements CommandLineRunner {
@@ -29,10 +31,7 @@ public class DataBasePopulator implements CommandLineRunner {
         ToDo toDo3 = new ToDo(null, "Müll rausbringen", false);
         ToDo toDo4 = new ToDo(null, "Schrank aufräumen", true);
 
-        toDoRepository.save(toDo1);
-        toDoRepository.save(toDo2);
-        toDoRepository.save(toDo3);
-        toDoRepository.save(toDo4);
+        toDoRepository.saveAll(Arrays.asList(toDo1, toDo2, toDo3, toDo4));
 
         //System.out.println(toDoRepository.countAllByCompletedIsTrue());
         //System.out.println(toDoService.countClosedToDo());

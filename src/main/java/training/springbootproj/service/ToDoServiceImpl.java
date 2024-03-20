@@ -7,10 +7,11 @@ import training.springbootproj.repository.ToDoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ToDoServiceImpl implements ToDoService{
+public class ToDoServiceImpl implements ToDoService {
     private final ToDoRepository toDoRepository;
 
     @Override
@@ -21,12 +22,17 @@ public class ToDoServiceImpl implements ToDoService{
     @Override
     public void updateToDo(ToDo toDo) {
         if (this.toDoRepository.findById(toDo.getId()).isPresent())
-                this.toDoRepository.save(toDo);
+            this.toDoRepository.save(toDo);
     }
 
     @Override
     public void deleteTodoById(Long id) {
         this.toDoRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<ToDo> getToDoById(Long id) {
+        return this.toDoRepository.findById(id);
     }
 
     @Override
@@ -36,9 +42,9 @@ public class ToDoServiceImpl implements ToDoService{
 
     @Override
     public List<ToDo> getOpenToDo() {
-        List<ToDo> openToDo= new ArrayList<>();
+        List<ToDo> openToDo = new ArrayList<>();
         List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for(ToDo t : allToDo) {
+        for (ToDo t : allToDo) {
             if (!t.getCompleted())
                 openToDo.add(t);
         }
@@ -47,9 +53,9 @@ public class ToDoServiceImpl implements ToDoService{
 
     @Override
     public List<ToDo> getClosedToDo() {
-        List<ToDo> closedToDo= new ArrayList<>();
+        List<ToDo> closedToDo = new ArrayList<>();
         List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for(ToDo t : allToDo) {
+        for (ToDo t : allToDo) {
             if (t.getCompleted())
                 closedToDo.add(t);
         }
@@ -60,7 +66,7 @@ public class ToDoServiceImpl implements ToDoService{
     public Long countOpenToDo() {
         Long count = 0L;
         List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for(ToDo t : allToDo) {
+        for (ToDo t : allToDo) {
             if (!t.getCompleted())
                 count++;
         }
@@ -71,7 +77,7 @@ public class ToDoServiceImpl implements ToDoService{
     public Long countClosedToDo() {
         Long count = 0L;
         List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for(ToDo t : allToDo) {
+        for (ToDo t : allToDo) {
             if (t.getCompleted())
                 count++;
         }
