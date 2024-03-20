@@ -7,18 +7,23 @@ import java.util.Optional;
 
 public interface ToDoService {
 
-    void createToDo(ToDo toDo);
+    ToDo createToDo(ToDo toDo);
 
-    void updateToDo(ToDo toDo);
+    ToDo updateToDo(ToDo toDo);
+
     void deleteTodoById(Long id);
+
     Optional<ToDo> getToDoById(Long id);
+
     List<ToDo> getAllToDo();
+
     List<ToDo> getOpenToDo();
+
     List<ToDo> getClosedToDo();
 
     Long countOpenToDo();
-    Long countClosedToDo();
 
+    Long countClosedToDo();
 
 
 }

@@ -15,14 +15,15 @@ public class ToDoServiceImpl implements ToDoService {
     private final ToDoRepository toDoRepository;
 
     @Override
-    public void createToDo(ToDo toDo) {
-        this.toDoRepository.save(toDo);
+    public ToDo createToDo(ToDo toDo) {
+        return this.toDoRepository.save(toDo);
     }
 
     @Override
-    public void updateToDo(ToDo toDo) {
+    public ToDo updateToDo(ToDo toDo) {
         if (this.toDoRepository.findById(toDo.getId()).isPresent())
-            this.toDoRepository.save(toDo);
+            return this.toDoRepository.save(toDo);
+        return null;
     }
 
     @Override

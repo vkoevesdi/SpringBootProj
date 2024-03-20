@@ -2,7 +2,10 @@ package training.springbootproj.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+import training.springbootproj.dto.CreateToDoTDO;
+import training.springbootproj.dto.UpdateToDoTDO;
 import training.springbootproj.entity.ToDo;
 import training.springbootproj.service.ToDoServiceImpl;
 
@@ -15,15 +18,16 @@ import java.util.Optional;
 public class ToDoController {
 
     private final ToDoServiceImpl toDoServiceImpl;
+    private final ModelMapper modelMapper;
 
     @PostMapping()
-    public void createToDo(@Valid @RequestBody ToDo toDo) {
-        this.toDoServiceImpl.createToDo(toDo);
+    public ToDo createToDo(@Valid @RequestBody CreateToDoTDO createToDoTDO) {
+        return toDoServiceImpl.createToDo(modelMapper.map(createToDoTDO, ToDo.class));
     }
 
     @PutMapping()
-    public void updateToDo(@Valid @RequestBody ToDo toDo) {
-        this.toDoServiceImpl.updateToDo(toDo);
+    public ToDo updateToDo(@Valid @RequestBody UpdateToDoTDO updateToDoTDO) {
+        return toDoServiceImpl.createToDo(modelMapper.map(updateToDoTDO,ToDo.class));
     }
 
     @DeleteMapping("/{id}")

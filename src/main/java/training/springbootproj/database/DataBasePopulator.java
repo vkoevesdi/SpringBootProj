@@ -20,7 +20,7 @@ public class DataBasePopulator implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Ich bin der Command Line Runner");
+        System.out.println("Ich bin der Command Line Runner und befülle deine Datenbank");
 
         ToDo toDo1 = new ToDo();
         toDo1.setId(null);
