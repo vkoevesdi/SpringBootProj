@@ -14,18 +14,19 @@ public class ToDoServiceImpl implements ToDoService{
     private final ToDoRepository toDoRepository;
 
     @Override
-    public void saveToDo(ToDo toDo) {
+    public void createToDo(ToDo toDo) {
         this.toDoRepository.save(toDo);
     }
 
     @Override
     public void updateToDo(ToDo toDo) {
-        this.toDoRepository.save(toDo);
+        if (this.toDoRepository.findById(toDo.getId()).isPresent())
+                this.toDoRepository.save(toDo);
     }
 
     @Override
-    public void deleteTodo(ToDo toDo) {
-        this.toDoRepository.delete(toDo);
+    public void deleteTodoById(Long id) {
+        this.toDoRepository.deleteById(id);
     }
 
     @Override
@@ -77,11 +78,12 @@ public class ToDoServiceImpl implements ToDoService{
         return count;
     }
 
-    public List<ToDo> findByCompletedIsTrue() {
+
+    public List<ToDo> findAllByCompletedIsTrue() {
         return toDoRepository.findAllByCompletedIsTrue();
     }
 
-    public List<ToDo> findByCompletedIsFalse() {
+    public List<ToDo> findAllByCompletedIsFalse() {
         return toDoRepository.findAllByCompletedIsFalse();
     }
 

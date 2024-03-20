@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface ToDoService {
 
-    void saveToDo(ToDo toDo);
+    void createToDo(ToDo toDo);
 
     void updateToDo(ToDo toDo);
-    void deleteTodo(ToDo toDo);
+    void deleteTodoById(Long id);
     List<ToDo> getAllToDo();
     List<ToDo> getOpenToDo();
     List<ToDo> getClosedToDo();
