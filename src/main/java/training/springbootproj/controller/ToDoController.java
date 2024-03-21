@@ -4,6 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import training.springbootproj.dto.CreateToDoTDO;
 import training.springbootproj.dto.UpdateToDoTDO;
@@ -21,13 +24,14 @@ public class ToDoController {
     private final ModelMapper modelMapper;
 
     @PostMapping()
-    public ToDo createToDo(@Valid @RequestBody CreateToDoTDO createToDoTDO) {
-        return toDoServiceImpl.createToDo(modelMapper.map(createToDoTDO, ToDo.class));
+    //@ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ToDo> createToDo(@Valid @RequestBody CreateToDoTDO createToDoTDO) {
+        return new ResponseEntity<>(toDoServiceImpl.createToDo(modelMapper.map(createToDoTDO, ToDo.class)),HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public ToDo updateToDo(@Valid @RequestBody UpdateToDoTDO updateToDoTDO) {
-        return toDoServiceImpl.createToDo(modelMapper.map(updateToDoTDO,ToDo.class));
+    public ResponseEntity<ToDo> updateToDo(@Valid @RequestBody UpdateToDoTDO updateToDoTDO) {
+        return new ResponseEntity<>(toDoServiceImpl.createToDo(modelMapper.map(updateToDoTDO,ToDo.class)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -36,38 +40,35 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}")
-    public ToDo getToDoById(@PathVariable Long id) {
-        return this.toDoServiceImpl.getToDoById(id);
+    public ResponseEntity<ToDo> getToDoById(@PathVariable Long id) {
+        return new ResponseEntity<>(this.toDoServiceImpl.getToDoById(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<ToDo> getAllToDo() {
-        return this.toDoServiceImpl.getAllToDo();
+    public ResponseEntity<List<ToDo>> getAllToDo() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("My-custom-Header", "My-custom-value");
+        return new ResponseEntity<>(this.toDoServiceImpl.getAllToDo(), responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/completed")
-    public List<ToDo> findAllByCompletedIsTrue() {
-        return this.toDoServiceImpl.findAllByCompletedIsTrue();
+    public ResponseEntity<List<ToDo>> findAllByCompletedIsTrue() {
+        return new ResponseEntity<>(this.toDoServiceImpl.findAllByCompletedIsTrue(), HttpStatus.OK);
     }
 
     @GetMapping("/open")
-    public List<ToDo> findAllByCompletedIsFalse() {
-        return this.toDoServiceImpl.findAllByCompletedIsFalse();
+    public ResponseEntity<List<ToDo>> findAllByCompletedIsFalse() {
+        return new ResponseEntity<>(this.toDoServiceImpl.findAllByCompletedIsFalse(),HttpStatus.OK);
     }
 
     @GetMapping("/completed/count")
-    public Long countAllByCompletedIsTrue() {
-        return this.toDoServiceImpl.countAllByCompletedIsTrue();
+    public ResponseEntity<Long> countAllByCompletedIsTrue() {
+        return new ResponseEntity<>(this.toDoServiceImpl.countAllByCompletedIsTrue(), HttpStatus.OK);
     }
 
     @GetMapping("/open/count")
-    public Long countAllByCompletedIsFalse() {
-        return this.toDoServiceImpl.countAllByCompletedIsFalse();
-    }
-
-    @GetMapping("/international")
-    public String getInternationalPage() {
-        return "international";
+    public ResponseEntity<Long> countAllByCompletedIsFalse() {
+        return new ResponseEntity<>(this.toDoServiceImpl.countAllByCompletedIsFalse(), HttpStatus.OK);
     }
 
 }

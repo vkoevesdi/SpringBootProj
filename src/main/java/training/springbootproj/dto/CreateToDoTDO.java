@@ -14,6 +14,5 @@ public class CreateToDoTDO {
     @Size(min = 5, max = 20)
     private String text;
 
-    @Null
     private final Boolean completed = false;
 }
