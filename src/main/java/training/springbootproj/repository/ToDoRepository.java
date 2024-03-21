@@ -10,8 +10,11 @@ import java.util.List;
 @Repository
 public interface ToDoRepository extends CrudRepository<ToDo, Long> {
     List<ToDo> findAllByCompletedIsTrue();
+
     List<ToDo> findAllByCompletedIsFalse();
+
     Long countAllByCompletedIsTrue();
+
     Long countAllByCompletedIsFalse();
 
     @Query("SELECT COUNT(*) FROM ToDo WHERE completed IS true")
