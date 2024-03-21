@@ -1,5 +1,6 @@
 package training.springbootproj.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -10,7 +11,6 @@ import training.springbootproj.entity.ToDo;
 import training.springbootproj.service.ToDoServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,13 +36,13 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<ToDo> getToDoById(@PathVariable Long id) {
+    public ToDo getToDoById(@PathVariable Long id) {
         return this.toDoServiceImpl.getToDoById(id);
     }
 
     @GetMapping("/all")
     public List<ToDo> getAllToDo() {
-        return (List<ToDo>) this.toDoServiceImpl.getAllToDo();
+        return this.toDoServiceImpl.getAllToDo();
     }
 
     @GetMapping("/completed")
@@ -64,4 +64,10 @@ public class ToDoController {
     public Long countAllByCompletedIsFalse() {
         return this.toDoServiceImpl.countAllByCompletedIsFalse();
     }
+
+    @GetMapping("/international")
+    public String getInternationalPage() {
+        return "international";
+    }
+
 }

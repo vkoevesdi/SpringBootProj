@@ -1,13 +1,12 @@
 package training.springbootproj.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import training.springbootproj.entity.ToDo;
 import training.springbootproj.repository.ToDoRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,59 +31,14 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public Optional<ToDo> getToDoById(Long id) {
-        return this.toDoRepository.findById(id);
+    public ToDo getToDoById(Long id) {
+        return this.toDoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public List<ToDo> getAllToDo() {
         return (List<ToDo>) this.toDoRepository.findAll();
     }
-
-    @Override
-    public List<ToDo> getOpenToDo() {
-        List<ToDo> openToDo = new ArrayList<>();
-        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for (ToDo t : allToDo) {
-            if (!t.getCompleted())
-                openToDo.add(t);
-        }
-        return openToDo;
-    }
-
-    @Override
-    public List<ToDo> getClosedToDo() {
-        List<ToDo> closedToDo = new ArrayList<>();
-        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for (ToDo t : allToDo) {
-            if (t.getCompleted())
-                closedToDo.add(t);
-        }
-        return closedToDo;
-    }
-
-    @Override
-    public Long countOpenToDo() {
-        Long count = 0L;
-        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for (ToDo t : allToDo) {
-            if (!t.getCompleted())
-                count++;
-        }
-        return count;
-    }
-
-    @Override
-    public Long countClosedToDo() {
-        Long count = 0L;
-        List<ToDo> allToDo = (List<ToDo>) this.toDoRepository.findAll();
-        for (ToDo t : allToDo) {
-            if (t.getCompleted())
-                count++;
-        }
-        return count;
-    }
-
 
     public List<ToDo> findAllByCompletedIsTrue() {
         return toDoRepository.findAllByCompletedIsTrue();
@@ -101,6 +55,4 @@ public class ToDoServiceImpl implements ToDoService {
     public Long countAllByCompletedIsFalse() {
         return toDoRepository.countAllByCompletedIsFalse();
     }
-
-
 }

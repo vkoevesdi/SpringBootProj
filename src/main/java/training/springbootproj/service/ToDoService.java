@@ -13,17 +13,7 @@ public interface ToDoService {
 
     void deleteTodoById(Long id);
 
-    Optional<ToDo> getToDoById(Long id);
+    ToDo getToDoById(Long id);
 
     List<ToDo> getAllToDo();
-
-    List<ToDo> getOpenToDo();
-
-    List<ToDo> getClosedToDo();
-
-    Long countOpenToDo();
-
-    Long countClosedToDo();
-
-
 }
