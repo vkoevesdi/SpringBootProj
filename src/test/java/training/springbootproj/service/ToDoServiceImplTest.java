@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import training.springbootproj.entity.ToDo;
 import training.springbootproj.repository.ToDoRepository;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,6 +18,16 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ToDoServiceImplTest {
+
+    ToDo toDo1 = new ToDo(null, "Wäsche waschen", false);
+    ToDo toDo2 = new ToDo(null, "Zimmer putzen", true);
+    ToDo toDo3 = new ToDo(null, "Pflanzen gießen", false);
+    ToDo toDo4 = new ToDo(null, "Büro putzen", false);
+    ToDo toDo5 = new ToDo(null, "Rasen mähen", true);
+
+    List<ToDo> completed = Arrays.asList(toDo2, toDo5);
+    List<ToDo> open = Arrays.asList(toDo1, toDo3, toDo4);
+    List<ToDo> all = Arrays.asList(toDo1, toDo2, toDo3, toDo4, toDo5);
     @Mock
     private ToDoRepository toDoRepository;
 
@@ -61,6 +74,8 @@ class ToDoServiceImplTest {
 
     @Test
     void getAllToDo() {
+        when(toDoRepository.findAll()).thenReturn(all);
+        assertEquals(all, toDoServiceImpl.getAllToDo());
 
     }
 
@@ -76,11 +91,13 @@ class ToDoServiceImplTest {
 
     @Test
     void countAllByCompletedIsTrue() {
-
+        when(toDoRepository.countAllByCompletedIsTrue()).thenReturn(Long.valueOf(completed.size()));
+        assertEquals(Long.valueOf(completed.size()), toDoServiceImpl.countAllByCompletedIsTrue());
     }
 
     @Test
     void countAllByCompletedIsFalse() {
-
+        when(toDoRepository.countAllByCompletedIsFalse()).thenReturn(Long.valueOf(open.size()));
+        assertEquals(Long.valueOf(open.size()), toDoServiceImpl.countAllByCompletedIsFalse());
     }
 }

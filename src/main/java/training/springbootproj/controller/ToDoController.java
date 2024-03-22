@@ -35,6 +35,7 @@ public class ToDoController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteToDoById(@PathVariable Long id) {
         this.toDoServiceImpl.deleteTodoById(id);
     }
