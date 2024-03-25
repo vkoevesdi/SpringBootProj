@@ -1,5 +1,6 @@
 package training.springbootproj.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -21,6 +22,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,49 +57,69 @@ class ToDoControllerTest {
 
 
     @Test
-    @WithMockUser(username = "user", password = "compusafe", roles = "USER")
+    @WithMockUser(username = "user", password = "compusafe", roles = "user")
     void createToDo() throws Exception {
         when(modelMapper.map(any(CreateToDoTDO.class), any())).thenReturn(toDo1);
         when(toDoServiceImpl.createToDo(toDo1)).thenReturn(toDo1);
 
         mockMvc.perform(post("/todo")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(toDo1)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void updateToDo() {
+    @WithMockUser(roles = "TODO_READ")
+    void deleteToDoByIdUnauthorized() throws Exception {
+        //doNothing().when(toDoServiceImpl).deleteTodoById(toDo1.getId());
+
+        mockMvc.perform(delete("/todo/" + toDo1.getId())
+                        //.with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(toDo1)))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(username = "user", password = "compusafe", roles ="USER")
+    @WithMockUser(roles = "TODO_DELETE")
     void deleteToDoById() throws Exception {
         doNothing().when(toDoServiceImpl).deleteTodoById(toDo1.getId());
 
         mockMvc.perform(delete("/todo/" + toDo1.getId())
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    @WithMockUser(username = "user", password = "compusafe", roles = "USER")
+    @WithMockUser(roles = "TODO_READ")
     void getToDoById() throws Exception {
         when(toDoServiceImpl.getToDoById(toDo1.getId())).thenReturn(toDo1);
 
         mockMvc.perform(get("/todo/{id}", 1L)
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(toDo1.getId())))
                         .andExpect(status().isOk());
     }
 
     @Test
+    void updateToDo() {
+    }
+    @Test
     void getAllToDo() {
 
     }
 
     @Test
-    void findAllByCompletedIsTrue() {
+    void findAllByCompletedIsTrue() throws Exception {
+        when(toDoServiceImpl.findAllByCompletedIsTrue()).thenReturn(completed);
+
+        mockMvc.perform(get("/todo/done")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(completed)))
+                .andExpect(status().isOk());
     }
 
     @Test
