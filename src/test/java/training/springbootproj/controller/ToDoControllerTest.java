@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import training.springbootproj.dto.CreateToDoTDO;
 import training.springbootproj.entity.ToDo;
@@ -53,6 +54,7 @@ class ToDoControllerTest {
 
 
     @Test
+    @WithMockUser(username = "user", password = "compusafe", roles = "USER")
     void createToDo() throws Exception {
         when(modelMapper.map(any(CreateToDoTDO.class), any())).thenReturn(toDo1);
         when(toDoServiceImpl.createToDo(toDo1)).thenReturn(toDo1);
@@ -68,6 +70,7 @@ class ToDoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", password = "compusafe", roles ="USER")
     void deleteToDoById() throws Exception {
         doNothing().when(toDoServiceImpl).deleteTodoById(toDo1.getId());
 
@@ -77,6 +80,7 @@ class ToDoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", password = "compusafe", roles = "USER")
     void getToDoById() throws Exception {
         when(toDoServiceImpl.getToDoById(toDo1.getId())).thenReturn(toDo1);
 
